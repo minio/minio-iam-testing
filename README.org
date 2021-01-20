@@ -1,0 +1,44 @@
+* Testing MinIO LDAP feature with OpenLDAP container
+
+The image provided by https://github.com/osixia/docker-openldap is being used here.
+
+Initial data for populating the LDAP server is present in the `bootstrap.ldif` file in this repo. It creates a LDAP hierachy with dummy data. In this dataset, each user's password is same as their `uid` value. For example, the password for `uid=bobfisher,ou=people,ou=hwengg,dc=min,dc=io` is just `bobfisher`.
+
+To start the OpenLDAP server container with the data in the ldif file above, run in the root directory of this repo:
+
+#+begin_src shell
+docker run \
+  -p 389:389 -p 636:636 --name minio-ldap-server \
+  --env LDAP_ORGANISATION="MinIO Inc" \
+  --env LDAP_DOMAIN="min.io" \
+  --env LDAP_ADMIN_PASSWORD="admin" \
+	--volume $PWD/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif \
+  --hostname minio-ldap-server \
+	osixia/openldap:1.4.0 --copy-service
+#+end_src
+
+In another terminal start the MinIO server locally configured with the above LDAP server:
+
+#+begin_src shell
+export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
+export MINIO_IDENTITY_LDAP_USERNAME_FORMAT='uid=%s,ou=people,ou=hwengg,dc=min,dc=io;uid=%s,ou=people,ou=swengg,dc=min,dc=io'
+export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
+export MINIO_IDENTITY_LDAP_ADMIN_BIND_USERNAME='cn=admin,dc=min,dc=io'
+export MINIO_IDENTITY_LDAP_ADMIN_BIND_PASSWORD=admin
+export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN='ou=hwengg,dc=min,dc=io;ou=swengg,dc=min,dc=io'
+export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER='(&(objectclass=groupOfNames)(member=%s))'
+export MINIO_IDENTITY_LDAP_GROUP_NAME_ATTRIBUTE=cn
+
+MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
+#+end_src
+
+Run the `ldap.go` testing binary available in the MinIO repo - see: https://github.com/minio/minio/blob/master/docs/sts/ldap.md#using-ldap-sts-api
+
+For example:
+
+#+begin_src shell
+$ go run ldap.go -u dillon -p dillon
+{KRHD6J5237M2Y2MUZT7N ELKeLxO321DAeoJcX6LmPuoAgx9LgKZE8U3PkGW8 eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJLUkhENko1MjM3TTJZMk1VWlQ3TiIsImV4cCI6MTYxMTE4NTM1NSwibGRhcFVzZXIiOiJ1aWQ9ZGlsbG9uLG91PXBlb3BsZSxvdT1zd2VuZ2csZGM9bWluLGRjPWlvIn0.y99K8tA8av4vTVEjFGfOFz-hbcTsnaF_D3B1ftX0tIc_bmbxxMcQOPZ8RI4Nn8rjr4nK-06eBBHmI4N8V06L4A S3v4} <nil>
+Calling list objects with temp creds: 
+{  0001-01-01 00:00:00 +0000 UTC 0  0001-01-01 00:00:00 +0000 UTC map[] map[] map[] 0 { } []  false false   0001-01-01 00:00:00 +0000 UTC  Access Denied.}
+#+end_src
