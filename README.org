@@ -29,10 +29,11 @@ export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN='dc=min,dc=io'
 export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER='(uid=%s)'
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN='ou=hwengg,dc=min,dc=io;ou=swengg,dc=min,dc=io'
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER='(&(objectclass=groupOfNames)(member=%s))'
-export MINIO_IDENTITY_LDAP_GROUP_NAME_ATTRIBUTE=cn
 
 MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
 #+end_src
+
+Setup a user or group policy as in https://github.com/minio/minio/blob/master/docs/sts/ldap.md#managing-usergroup-access-policy
 
 Run the `ldap.go` testing binary available in the MinIO repo - see: https://github.com/minio/minio/blob/master/docs/sts/ldap.md#using-ldap-sts-api
 
