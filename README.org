@@ -20,17 +20,29 @@ docker run \
 In another terminal start the MinIO server locally configured with the above LDAP server:
 
 #+begin_src shell
-export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
-#export MINIO_IDENTITY_LDAP_USERNAME_FORMAT='uid=%s,ou=people,ou=hwengg,dc=min,dc=io;uid=%s,ou=people,ou=swengg,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
-export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN='cn=admin,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin
-export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN='dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER='(uid=%s)'
-export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN='ou=hwengg,dc=min,dc=io;ou=swengg,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER='(&(objectclass=groupOfNames)(member=%s))'
+  
+  export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN=ou=swengg,dc=min,dc=io
+  export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin
+  export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER=(&(objectclass=groupOfNames)(member=%d))
+  export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
+  export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN=dc=min,dc=io
+  export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER=(uid=%s)
+  export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
+  export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN=cn=admin,dc=min,dc=io
 
-MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
+
+  # OLDER ENV VARS
+  export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
+  #export MINIO_IDENTITY_LDAP_USERNAME_FORMAT='uid=%s,ou=people,ou=hwengg,dc=min,dc=io;uid=%s,ou=people,ou=swengg,dc=min,dc=io'
+  export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
+  export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN='cn=admin,dc=min,dc=io'
+  export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin
+  export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN='dc=min,dc=io'
+  export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER='(uid=%s)'
+  export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN='ou=hwengg,dc=min,dc=io;ou=swengg,dc=min,dc=io'
+  export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER='(&(objectclass=groupOfNames)(member=%s))'
+
+  MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
 #+end_src
 
 Setup a user or group policy as in https://github.com/minio/minio/blob/master/docs/sts/ldap.md#managing-usergroup-access-policy
