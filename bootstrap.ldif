@@ -80,9 +80,17 @@ userPassword: {SSHA}feVkKkafHtsu2Io7n0tQP4Cnh8/Oy1PK
 dn: uid=fahim,ou=people,ou=swengg,dc=min,dc=io
 objectClass: inetOrgPerson
 cn: Fahim Ahmed
-sn: Admed
+sn: Ahmed
 uid: fahim
 userPassword: {SSHA}lRNH+PHooRaruiEb+CBEA21EZLMkAmcc
+
+# Add a user with special chars. The password = example here.
+dn: uid=Пользователь,OU=people,OU=swengg,DC=min,DC=io
+objectClass: inetOrgPerson
+cn: Special Charsman
+sn: Charsman
+uid: Пользователь
+userPassword: {SSHA}XQSZqLPvYgm30wR7pk67a1GW+q+DDvSj
 
 # Creates groups ou for swengg
 dn: ou=groups,ou=swengg,dc=min,dc=io
@@ -105,3 +113,4 @@ description: Project B group members
 member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
 member: uid=liza,ou=people,ou=swengg,dc=min,dc=io
 member: uid=fahim,ou=people,ou=swengg,dc=min,dc=io
+member: uid=Пользователь,OU=people,OU=swengg,DC=min,DC=io
