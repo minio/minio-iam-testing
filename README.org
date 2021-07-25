@@ -72,8 +72,22 @@ Re-enter new password:
 
 ** Querying or Deleting users in the directory (for testing)
 
-#+begin_src shell
+#+begin_src
+# Delete a user
 $ ldapdelete  -D 'cn=admin,dc=min,dc=io' -w admin uid=liza,ou=people,ou=swengg,dc=min,dc=io
 
+# Find a user
 $ ldapsearch  -D 'cn=admin,dc=min,dc=io' -w admin  -b 'uid=dillon,ou=people,ou=swengg,dc=min,dc=io' -s sub -LLL '(objectclass=*)'
+
+# Delete a group
+$ ldapdelete  -D 'cn=admin,dc=min,dc=io' -w admin cn=projecta,ou=groups,ou=swengg,dc=min,dc=io
+
+# Delete a member from a group (create a file like below)
+$ cat del-member.ldif
+dn: cn=projectb,ou=groups,ou=swengg,dc=min,dc=io
+changetype: modify
+delete: member
+member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
+$ ldapmodify  -D 'cn=admin,dc=min,dc=io' -w admin -f del-member.ldif
+
 #+end_src
