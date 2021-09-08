@@ -58,6 +58,12 @@ Calling list objects with temp creds:
 {  0001-01-01 00:00:00 +0000 UTC 0  0001-01-01 00:00:00 +0000 UTC map[] map[] map[] 0 { } []  false false   0001-01-01 00:00:00 +0000 UTC  Access Denied.}
 #+end_src
 
+** Testing login in with ldapsearch
+
+   #+begin_src
+   $ ldapsearch -D 'uid=dillon,ou=people,ou=swengg,dc=min,dc=io' -w dillon -b 'uid=dillon,ou=people,ou=swengg,dc=min,dc=io' -s sub -LLL '(objectclass=*)'
+   #+end_src
+
 ** Creating password values for LDIF files
 
 Use the slappasswd tool in the container:
