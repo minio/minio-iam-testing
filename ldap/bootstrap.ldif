@@ -14,7 +14,7 @@ objectClass: inetOrgPerson
 cn: Alice Smith
 sn: Smith
 uid: alice1
-mail: alice@min.io
+mail: alice@example.io
 userPassword: {SSHA}Yeh2/IV/q/HjG2yzN3YdE9CAF3EJFCLu
 
 dn: uid=bobfisher,ou=people,ou=hwengg,dc=min,dc=io
@@ -22,7 +22,7 @@ objectClass: inetOrgPerson
 cn: Robert Fisher
 sn: Fisher
 uid: bobfisher
-mail: bob@min.io
+mail: bob@example.io
 userPassword: {SSHA}LktfbhK5oXSdDWCNzauJ9JA+Poxinl3y
 
 dn: uid=cody3,ou=people,ou=hwengg,dc=min,dc=io
@@ -30,7 +30,7 @@ objectClass: inetOrgPerson
 cn: Cody Thomas
 sn: Thomas
 uid: cody3
-mail: cody@min.io
+mail: cody@example.io
 userPassword: {SSHA}H8B0gaOd4bRklK3fXj9ltHvJXWQFXW5Q
 
 # Create groups ou for hwengg
@@ -71,7 +71,7 @@ objectClass: inetOrgPerson
 cn: Dillon Harper
 sn: Harper
 uid: dillon
-mail: dillon@min.io
+mail: dillon@example.io
 userPassword: {SSHA}UH+LmoEhWWW6s9rjgdpqHPI0qCMouY8+
 
 dn: uid=liza,ou=people,ou=swengg,dc=min,dc=io
@@ -79,7 +79,7 @@ objectClass: inetOrgPerson
 cn: Elizabeth Jones
 sn: Jones
 uid: liza
-mail: ejones@min.io
+mail: ejones@example.io
 userPassword: {SSHA}feVkKkafHtsu2Io7n0tQP4Cnh8/Oy1PK
 
 dn: uid=fahim,ou=people,ou=swengg,dc=min,dc=io
@@ -87,7 +87,7 @@ objectClass: inetOrgPerson
 cn: Fahim Ahmed
 sn: Ahmed
 uid: fahim
-mail: fahmed@min.io
+mail: fahmed@example.io
 userPassword: {SSHA}lRNH+PHooRaruiEb+CBEA21EZLMkAmcc
 
 # Add a user with special chars. The password = example here.
@@ -96,7 +96,7 @@ objectClass: inetOrgPerson
 cn: Special Charsman
 sn: Charsman
 uid: Пользователь
-mail: scharsman@min.io
+mail: scharsman@example.io
 userPassword: {SSHA}XQSZqLPvYgm30wR7pk67a1GW+q+DDvSj
 
 # Creates groups ou for swengg

@@ -1,0 +1,102 @@
+{{- /* NOTE: This configuration file is an example and exists only for development purposes. */ -}}
+{{- /* To find more about gomplate formatting, please visit its documentation site - https://docs.gomplate.ca/ */ -}}
+issuer: {{ getenv "DEX_ISSUER" "http://127.0.0.1:5556/dex" }}
+
+storage:
+  type: sqlite3
+  config:
+    file: {{ getenv "DEX_STORAGE_SQLITE3_CONFIG_FILE" "/var/dex/dex.db" }}
+
+web:
+{{- if getenv "DEX_WEB_HTTPS" "" }}
+  https: {{ .Env.DEX_WEB_HTTPS }}
+  tlsKey: {{ getenv "DEX_WEB_TLS_KEY" | required "$DEX_WEB_TLS_KEY in case of web.https is enabled" }}
+  tlsCert: {{ getenv "DEX_WEB_TLS_CERT" | required "$DEX_WEB_TLS_CERT in case of web.https is enabled" }}
+{{- end }}
+  http: {{ getenv "DEX_WEB_HTTP" "0.0.0.0:5556" }}
+
+{{- if getenv "DEX_TELEMETRY_HTTP" }}
+telemetry:
+  http: {{ .Env.DEX_TELEMETRY_HTTP }}
+{{- end }}
+
+expiry:
+  deviceRequests: {{ getenv "DEX_EXPIRY_DEVICE_REQUESTS" "5m" }}
+  signingKeys: {{ getenv "DEX_EXPIRY_SIGNING_KEYS" "6h" }}
+  idTokens: {{ getenv "DEX_EXPIRY_ID_TOKENS" "24h" }}
+  authRequests: {{ getenv "DEX_EXPIRY_AUTH_REQUESTS" "24h" }}
+
+logger:
+  level: {{ getenv "DEX_LOG_LEVEL" "debug" }}
+  format: {{ getenv "DEX_LOG_FORMAT" "text" }}
+
+oauth2:
+  responseTypes: {{ getenv "DEX_OAUTH2_RESPONSE_TYPES" "[code]" }}
+  skipApprovalScreen: true
+  alwaysShowLoginScreen: {{ getenv "DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN" "false" }}
+{{- if getenv "DEX_OAUTH2_PASSWORD_CONNECTOR" "" }}
+  passwordConnector: {{ .Env.DEX_OAUTH2_PASSWORD_CONNECTOR }}
+{{- end }}
+
+enablePasswordDB: {{ getenv "DEX_ENABLE_PASSWORD_DB" "true" }}
+
+connectors:
+- type: ldap
+  name: OpenLDAP
+  id: ldap
+  config:
+    # The following configurations seem to work with OpenLDAP:
+    #
+    # 1) Plain LDAP, without TLS:
+    host: localhost:389
+    insecureNoSSL: true
+    #
+    # 2) LDAPS without certificate validation:
+    #host: localhost:636
+    #insecureNoSSL: false
+    #insecureSkipVerify: true
+    #
+    # 3) LDAPS with certificate validation:
+    #host: YOUR-HOSTNAME:636
+    #insecureNoSSL: false
+    #insecureSkipVerify: false
+    #rootCAData: 'CERT'
+    # ...where CERT="$( base64 -w 0 your-cert.crt )"
+
+    # This would normally be a read-only user.
+    bindDN: cn=admin,dc=min,dc=io
+    bindPW: admin
+
+    usernamePrompt: Email Address
+
+    userSearch:
+      baseDN: dc=min,dc=io
+      filter: "(objectClass=person)"
+      username: mail
+      # "DN" (case sensitive) is a special attribute name. It indicates that
+      # this value should be taken from the entity's DN not an attribute on
+      # the entity.
+      idAttr: DN
+      emailAttr: mail
+      nameAttr: cn
+
+    groupSearch:
+      baseDN: dc=min,dc=io
+      filter: "(objectClass=groupofnames)"
+
+      userMatchers:
+        # A user is a member of a group when their DN matches
+        # the value of a "member" attribute on the group entity.
+      - userAttr: DN
+        groupAttr: member
+
+      # The group name should be the "cn" value.
+      nameAttr: cn
+
+staticClients:
+- id: minio-client-app
+  secret: minio-client-app-secret
+  name: 'MinIO Example Client App'
+  # Where the app will be running.
+  redirectURIs:
+  - 'http://127.0.0.1:10000/oauth_callback'
