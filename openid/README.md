@@ -54,9 +54,11 @@ Run MinIO locally:
 export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
-export MINIO_IDENTITY_OPENID_CLAIM_NAME="groups"
+# export MINIO_IDENTITY_OPENID_CLAIM_NAME="groups"
 export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
+# role policy if desired:
+export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
 
 export MINIO_ROOT_USER=minio
 export MINIO_ROOT_PASSWORD=minio123
