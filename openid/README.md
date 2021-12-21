@@ -1,52 +1,8 @@
 # Setup dex IDP with LDAP connector
 
-## Pre-requisite
+The container image runs Dex as the OpenID provider with user data from an OpenLDAP server.
 
-Create a pod for running the containers:
-```shell
-podman pod create --name mypod -p 1389:389 -p 1636:636 -p 5556:5556
-podman pod start mypod
-```
-
-First start OpenLDAP container with example data. From the current directory, run:
-
-```shell
-podman run \
-    --env LDAP_ORGANIZATION="MinIO Inc." \
-    --env LDAP_DOMAIN="min.io" \
-    --env LDAP_ADMIN_PASSWORD="admin" \
-    --name openldap \
-    --pod mypod \
-    --detach \
-    quay.io/minio/openldap --copy-service
-
-# OR build locally and run with:
-
-cd ../ldap
-podman build -t ldap-test .
-podman run \
-    --env LDAP_ORGANIZATION="MinIO Inc." \
-    --env LDAP_DOMAIN="min.io" \
-    --env LDAP_ADMIN_PASSWORD="admin" \
-    --volume $PWD/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif \
-    --name openldap \
-    --pod mypod \
-    --detach \
-    ldap-test --copy-service
-
-
-```
-
-Next build and run the OpenID container:
-
-```shell
-podman build -t openid-test .
-podman run -it \
-    --name openid \
-    --pod mypod \
-    openid-test
-
-```
+See the Makefile to start the Dex and OpenLDAP containers.
 
 Run MinIO locally:
 
@@ -63,5 +19,48 @@ export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
 export MINIO_ROOT_USER=minio
 export MINIO_ROOT_PASSWORD=minio123
 
+# OR
+mc admin config set myminio identity_openid \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    role_policy="consoleAdmin"
+
+# OR
+mc admin config set myminio identity_openid:dextest \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    role_policy="consoleAdmin"
+
+
+
 ./minio server --console-address ":10000" /tmp/disk
 ```
+
+## Changing the LDAP server address
+
+This may be needed if the LDAP server is not running at `locahost:389` for the Dex container.
+
+Add the following environment as a command line option when starting the container:
+
+
+```
+--env DEX_LDAP_SERVER="localhost:SOME-PORT"
+```
+
+Replace `SOME-PORT` appropriately.
+
+## Changing the allowed redirect URI in the Dex container
+
+This may be needed if your MinIO server's console port is not 10000.
+
+```
+--env DEX_CLIENT_REDIRECT_URI="http://127.0.0.1:SOME-PORT/oauth_callback"
+```
+
+Replace `SOME-PORT` appropriately.

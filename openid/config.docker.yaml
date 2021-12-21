@@ -99,4 +99,4 @@ staticClients:
   name: 'MinIO Example Client App'
   # Where the app will be running.
   redirectURIs:
-  - 'http://127.0.0.1:10000/oauth_callback'
+  - {{ getenv "DEX_CLIENT_REDIRECT_URI" "http://127.0.0.1:10000/oauth_callback" }}

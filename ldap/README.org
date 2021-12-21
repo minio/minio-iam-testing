@@ -4,24 +4,13 @@ The image provided by https://github.com/osixia/docker-openldap is being used he
 
 Initial data for populating the LDAP server is present in the `bootstrap.ldif` file in this repo. It creates a LDAP hierachy with dummy data. In this dataset, each user's password is same as their `uid` value. For example, the password for `uid=bobfisher,ou=people,ou=hwengg,dc=min,dc=io` is just `bobfisher`.
 
-To start the OpenLDAP server container with the data in the ldif file above, run in the root directory of this repo:
-
-#+begin_src shell
-docker run \
-  -p 389:389 -p 636:636 --name minio-ldap-server \
-  --env LDAP_ORGANISATION="MinIO Inc" \
-  --env LDAP_DOMAIN="min.io" \
-  --env LDAP_ADMIN_PASSWORD="admin" \
-	--volume $PWD/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif \
-  --hostname minio-ldap-server \
-	osixia/openldap:1.4.0 --copy-service
-#+end_src
+See the Makefile to run the containers with either docker or podman.
 
 In another terminal start the MinIO server locally configured with the above LDAP server:
 
 #+begin_src shell
   
-export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
+export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:1389
 export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
 export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN=cn=admin,dc=min,dc=io
 export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin
@@ -29,18 +18,6 @@ export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN=dc=min,dc=io
 export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER="(uid=%s)"
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN=ou=swengg,dc=min,dc=io
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER="(&(objectclass=groupOfNames)(member=%d))"
-
-
-# OLDER ENV VARS
-export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
-#export MINIO_IDENTITY_LDAP_USERNAME_FORMAT='uid=%s,ou=people,ou=hwengg,dc=min,dc=io;uid=%s,ou=people,ou=swengg,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
-export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN='cn=admin,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin
-export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN='dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER='(uid=%s)'
-export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN='ou=hwengg,dc=min,dc=io;ou=swengg,dc=min,dc=io'
-export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER='(&(objectclass=groupOfNames)(member=%s))'
 
 MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
 #+end_src
