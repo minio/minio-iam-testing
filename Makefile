@@ -23,10 +23,10 @@ podman-images:
 	(cd ldap && podman build -t quay.io/minio/openldap:latest .)
 	(cd openid && podman build -t quay.io/minio/dex:latest .)
 
-# Run both OpenLDAP (exposed on localhost:1389,1636) and Dex (exposed at
-# localhost:5556).
+# Run both OpenLDAP (exposed on localhost:1389,1636) and two Dex instances (exposed at
+# localhost:5556 and localhost:5557).
 podman-run:
-	podman pod create --name iam-testing -p 1389:389 -p 1636:636 -p 5556:5556
+	podman pod create --name iam-testing -p 1389:389 -p 1636:636 -p 5556:5556 -p 5557:5557
 	podman pod start iam-testing
 	podman run \
     --env LDAP_ORGANIZATION="MinIO Inc." \
@@ -38,6 +38,13 @@ podman-run:
     quay.io/minio/openldap:latest --copy-service
 	podman run \
     --name dex \
+    --pod iam-testing \
+    --detach \
+    quay.io/minio/dex:latest
+	podman run \
+    --env DEX_ISSUER="http://127.0.0.1:5557/dex" \
+    --env DEX_WEB_HTTP="0.0.0.0:5557" \
+    --name dex-2 \
     --pod iam-testing \
     --detach \
     quay.io/minio/dex:latest

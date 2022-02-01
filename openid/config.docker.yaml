@@ -106,3 +106,27 @@ staticClients:
   - "http://127.0.0.1:14000/oauth_callback"
   - "http://127.0.0.1:15000/oauth_callback"
   - "http://127.0.0.1:16000/oauth_callback"
+- id: minio-client-app-2
+  secret: minio-client-app-secret-2
+  name: 'MinIO Example Client App 2'
+  # Where the app will be running.
+  redirectURIs:
+  - {{ getenv "DEX_CLIENT_REDIRECT_URI" "http://127.0.0.1:10000/oauth_callback" }}
+  - "http://127.0.0.1:11000/oauth_callback"
+  - "http://127.0.0.1:12000/oauth_callback"
+  - "http://127.0.0.1:13000/oauth_callback"
+  - "http://127.0.0.1:14000/oauth_callback"
+  - "http://127.0.0.1:15000/oauth_callback"
+  - "http://127.0.0.1:16000/oauth_callback"
+- id: minio-client-app-3
+  secret: minio-client-app-secret-3
+  name: 'MinIO Example Client App 3'
+  # Where the app will be running.
+  redirectURIs:
+  - {{ getenv "DEX_CLIENT_REDIRECT_URI" "http://127.0.0.1:10000/oauth_callback" }}
+  - "http://127.0.0.1:11000/oauth_callback"
+  - "http://127.0.0.1:12000/oauth_callback"
+  - "http://127.0.0.1:13000/oauth_callback"
+  - "http://127.0.0.1:14000/oauth_callback"
+  - "http://127.0.0.1:15000/oauth_callback"
+  - "http://127.0.0.1:16000/oauth_callback"
