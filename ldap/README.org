@@ -19,7 +19,7 @@ export MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER="(uid=%s)"
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN=ou=swengg,dc=min,dc=io
 export MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER="(&(objectclass=groupOfNames)(member=%d))"
 
-MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
+MINIO_ROOT_USER=minio MINIO_ROOT_PASSWORD=minio123 ${PATH_TO_MINIO_BIN_DIR}/minio server /tmp/disk{1...4}
 #+end_src
 
 Setup a user or group policy as in https://github.com/minio/minio/blob/master/docs/sts/ldap.md#managing-usergroup-access-policy
