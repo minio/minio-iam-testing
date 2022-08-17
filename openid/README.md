@@ -71,6 +71,29 @@ export MINIO_ROOT_PASSWORD=minio123
 ./minio server --console-address ":10000" /tmp/disk
 ```
 
+### Equivalent configuration with `mc`
+
+``` shell
+mc admin config set myminio identity_openid:dex1 \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    display_name="Login via dex2" \
+    role_policy="consoleAdmin"
+
+mc admin config set myminio identity_openid:dex2 \
+    config_url="http://localhost:5557/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app-2" \
+    client_secret="minio-client-app-secret-2" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    display_name="Login via dex2" \
+    role_policy="readwrite"
+
+```
+
 The server will now print two ARNs and both may be used to generate STS credentials.
 
 ## Changing the LDAP server address
