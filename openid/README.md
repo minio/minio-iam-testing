@@ -4,8 +4,15 @@ The container image runs Dex as the OpenID provider with user data from an OpenL
 
 See the Makefile to start the Dex and OpenLDAP containers.
 
-Run MinIO locally:
+## Run MinIO locally with a single OpenID provider
 
+The OpenID provider may be configured as either a JWT claim based provider (by specifying `claim_name`) or as a role based provider (by specifying `role_policy`).
+
+Only OpenID related configuration is specified here.
+
+### Claim based provider configuration
+
+Server env:
 ```shell
 export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
@@ -13,50 +20,63 @@ export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
 export MINIO_IDENTITY_OPENID_CLAIM_NAME="groups"
 export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
-# role policy if desired:
-# export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
-
-export MINIO_ROOT_USER=minio
-export MINIO_ROOT_PASSWORD=minio123
-
-# OR
-mc admin config set myminio identity_openid \
-    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
-    client_id="minio-client-app" \
-    client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
-    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
-    display_name="Login via dex1" \
-    role_policy="consoleAdmin"
-
-# OR
-mc admin config set myminio identity_openid:dextest \
-    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
-    client_id="minio-client-app" \
-    client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
-    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
-    display_name="Login via dex2" \
-    role_policy="consoleAdmin"
-
-
-
-./minio server --console-address ":10000" /tmp/disk
 ```
 
-## Running MinIO with multiple OIDC providers
+Equivalently configure with `mc`:
+```shell
+mc admin idp set myminio openid \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    claim_name="groups"
+```
+
+### Role based provider configuration
+
+Server env:
+```shell
+export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/openid-configuration"
+export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
+export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
+export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
+export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
+export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
+```
+
+Equivalently configure with `mc`:
+```shell
+mc admin idp set myminio openid \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    role_policy="consoleAdmin"
+```
+
+
+## Run MinIO locally with a two OpenID providers
+
+If running MinIO with multiple OpenID providers, at most one JWT claim based provider may be specified. The others must use role policy support. 
+
+Here, both providers use role policy.
 
 Run `make podman-run` to start multiple Dex servers as separate IDentity Providers (IDPs). Then start MinIO with:
 
-```
-# With multiple OIDC IDPs only role policies are supported.
 
+### Setup with two role policy based OIDC providers
+
+Server env:
+```
 export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
 export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
 export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
+export MINIO_IDENTITY_OPENID_DISPLAY_NAME="Login via dex1"
 
 export MINIO_IDENTITY_OPENID_CONFIG_URL_OIDC2="http://localhost:5557/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID_OIDC2="minio-client-app-2"
@@ -64,35 +84,31 @@ export MINIO_IDENTITY_OPENID_CLIENT_SECRET_OIDC2="minio-client-app-secret-2"
 export MINIO_IDENTITY_OPENID_SCOPES_OIDC2="openid,groups"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI_OIDC2="http://127.0.0.1:10000/oauth_callback"
 export MINIO_IDENTITY_OPENID_ROLE_POLICY_OIDC2="readwrite"
-
-export MINIO_ROOT_USER=minio
-export MINIO_ROOT_PASSWORD=minio123
-
-./minio server --console-address ":10000" /tmp/disk
+export MINIO_IDENTITY_OPENID_DISPLAY_NAME_OIDC2="Login via dex2"
 ```
 
-### Equivalent configuration with `mc`
-
-``` shell
-mc admin config set myminio identity_openid:dex1 \
+Equivalently configure with `mc`:
+```
+mc admin idp set myminio identity_openid \
+    config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
+    client_id="minio-client-app" \
+    client_secret="minio-client-app-secret" \
+    scopes="openid,groups" \
+    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
+    display_name="Login via dex1" \
+    role_policy="consoleAdmin"
+mc admin idp set myminio openid oidc2 \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
     scopes="openid,groups" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex2" \
-    role_policy="consoleAdmin"
-
-mc admin config set myminio identity_openid:dex2 \
-    config_url="http://localhost:5557/dex/.well-known/openid-configuration" \
-    client_id="minio-client-app-2" \
-    client_secret="minio-client-app-secret-2" \
-    scopes="openid,groups" \
-    redirect_uri="http://127.0.0.1:10000/oauth_callback" \
-    display_name="Login via dex2" \
     role_policy="readwrite"
 
 ```
+
+As of writing, console support for multiple IDP is WIP.
 
 The server will now print two ARNs and both may be used to generate STS credentials.
 
