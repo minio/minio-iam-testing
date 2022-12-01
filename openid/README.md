@@ -1,8 +1,9 @@
-# Setup dex IDP with LDAP connector
+# Setup
 
-The container image runs Dex as the OpenID provider with user data from an OpenLDAP server.
+To try out OpenID based IDP with MinIO we need the following:
 
-See the Makefile to start the Dex and OpenLDAP containers.
+1. One or more OpenID based IDP providers - here we setup two Dex IDP services. Each of these IDPs use the same OpenLDAP based backend, and so will share the same set of users.
+2. MinIO running and configured with each of these IDPs
 
 ## Run MinIO locally with a single OpenID provider
 
@@ -24,7 +25,7 @@ export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback
 
 Equivalently configure with `mc`:
 ```shell
-mc admin idp set myminio openid \
+mc admin idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
@@ -47,7 +48,7 @@ export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback
 
 Equivalently configure with `mc`:
 ```shell
-mc admin idp set myminio openid \
+mc admin idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
@@ -89,7 +90,7 @@ export MINIO_IDENTITY_OPENID_DISPLAY_NAME_OIDC2="Login via dex2"
 
 Equivalently configure with `mc`:
 ```
-mc admin idp set myminio identity_openid \
+mc admin idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
@@ -97,7 +98,9 @@ mc admin idp set myminio identity_openid \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex1" \
     role_policy="consoleAdmin"
-mc admin idp set myminio openid oidc2 \
+
+# For the second one the IDP configuration must have a name (here "oidc2")
+mc admin idp openid add myminio oidc2 \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app-2" \
     client_secret="minio-client-app-secret-2" \
@@ -107,8 +110,6 @@ mc admin idp set myminio openid oidc2 \
     role_policy="readwrite"
 
 ```
-
-As of writing, console support for multiple IDP is WIP.
 
 The server will now print two ARNs and both may be used to generate STS credentials.
 

@@ -22,6 +22,15 @@ services:
       DEX_CLIENT_REDIRECT_URI: "http://nginx:10000/oauth_callback"
       DEX_ISSUER: "http://dex:5556/dex"
       DEX_LDAP_SERVER: "ldap:389"
+  dex2:
+    image: quay.io/minio/dex:latest
+    ports:
+      - "5557:5557"
+    environment:
+      DEX_CLIENT_REDIRECT_URI: "http://nginx:10000/oauth_callback"
+      DEX_ISSUER: "http://dex2:5557/dex"
+      DEX_LDAP_SERVER: "ldap:389"
+      DEX_WEB_HTTP: "0.0.0.0:5557"
   nginx:
     image: nginx
     ports:
@@ -30,7 +39,7 @@ services:
     volumes:
       - "./nginx-lb.conf:/etc/nginx/nginx.conf:ro"
   minio1:
-    image: minio/minio:RELEASE.2022-09-25T15-44-53Z
+    image: local/minio:latest
     ports:
       - "9001:9000"
       - "10001:10000"
@@ -43,13 +52,13 @@ services:
       MINIO_IDENTITY_OPENID_CONFIG_URL: "http://dex:5556/dex/.well-known/openid-configuration"
       MINIO_IDENTITY_OPENID_CLIENT_ID: "minio-client-app"
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: "minio-client-app-secret"
-      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups"
+      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups,email"
       MINIO_IDENTITY_OPENID_REDIRECT_URI: "http://nginx:10000/oauth_callback"
       MINIO_IDENTITY_OPENID_ROLE_POLICY: "consoleAdmin"
       MINIO_IDENTITY_OPENID_DISPLAY_NAME: "Login via dex1"
     command: server --console-address :10000 http://minio1/export http://minio2/export http://minio3/export http://minio4/export
   minio2:
-    image: minio/minio:RELEASE.2022-09-25T15-44-53Z
+    image: local/minio:latest
     ports:
       - "9002:9000"
       - "10002:10000"
@@ -62,13 +71,13 @@ services:
       MINIO_IDENTITY_OPENID_CONFIG_URL: "http://dex:5556/dex/.well-known/openid-configuration"
       MINIO_IDENTITY_OPENID_CLIENT_ID: "minio-client-app"
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: "minio-client-app-secret"
-      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups"
+      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups,email"
       MINIO_IDENTITY_OPENID_REDIRECT_URI: "http://nginx:10000/oauth_callback"
       MINIO_IDENTITY_OPENID_ROLE_POLICY: "consoleAdmin"
       MINIO_IDENTITY_OPENID_DISPLAY_NAME: "Login via dex1"
     command: server --console-address :10000 http://minio1/export http://minio2/export http://minio3/export http://minio4/export
   minio3:
-    image: minio/minio:RELEASE.2022-09-25T15-44-53Z
+    image: local/minio:latest
     ports:
       - "9003:9000"
       - "10003:10000"
@@ -81,13 +90,13 @@ services:
       MINIO_IDENTITY_OPENID_CONFIG_URL: "http://dex:5556/dex/.well-known/openid-configuration"
       MINIO_IDENTITY_OPENID_CLIENT_ID: "minio-client-app"
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: "minio-client-app-secret"
-      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups"
+      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups,email"
       MINIO_IDENTITY_OPENID_REDIRECT_URI: "http://nginx:10000/oauth_callback"
       MINIO_IDENTITY_OPENID_ROLE_POLICY: "consoleAdmin"
       MINIO_IDENTITY_OPENID_DISPLAY_NAME: "Login via dex1"
     command: server --console-address :10000 http://minio1/export http://minio2/export http://minio3/export http://minio4/export
   minio4:
-    image: minio/minio:RELEASE.2022-09-25T15-44-53Z
+    image: local/minio:latest
     ports:
       - "9004:9000"
       - "10004:10000"
@@ -100,7 +109,7 @@ services:
       MINIO_IDENTITY_OPENID_CONFIG_URL: "http://dex:5556/dex/.well-known/openid-configuration"
       MINIO_IDENTITY_OPENID_CLIENT_ID: "minio-client-app"
       MINIO_IDENTITY_OPENID_CLIENT_SECRET: "minio-client-app-secret"
-      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups"
+      MINIO_IDENTITY_OPENID_SCOPES: "openid,groups,email"
       MINIO_IDENTITY_OPENID_REDIRECT_URI: "http://nginx:10000/oauth_callback"
       MINIO_IDENTITY_OPENID_ROLE_POLICY: "consoleAdmin"
       MINIO_IDENTITY_OPENID_DISPLAY_NAME: "Login via dex1"
