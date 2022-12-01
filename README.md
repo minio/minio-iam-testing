@@ -76,6 +76,8 @@ mc admin idp openid add myminio oidc2 \
 
 ```
 
+You should now be able to login via either IDP in the MinIO Console now.
+
 
 ## Docker Compose file
 
