@@ -34,11 +34,11 @@ Once the IDP container is running, and MinIO is running and configured with `mc`
 mc admin idp ldap add myminio \
     server_addr=localhost:1389 \
     server_insecure=on \
-    lookup_bind_dn=cd=admin,dc=min,dc=io \
+    lookup_bind_dn=cn=admin,dc=min,dc=io \
     lookup_bind_password=admin \
     user_dn_search_base_dn=dc=min,dc=io \
     user_dn_search_filter="(uid=%s)" \
-    group_dn_search_base_dn=ou=swengg,dc=min,dc=io \
+    group_search_base_dn=ou=swengg,dc=min,dc=io \
     group_search_filter="(&(objectclass=groupOfNames)(member=%d))"
 ```
 
