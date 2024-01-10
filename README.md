@@ -59,7 +59,7 @@ mc idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex1" \
     role_policy="consoleAdmin"
@@ -69,7 +69,7 @@ mc idp openid add myminio oidc2 \
     config_url="http://localhost:5557/dex/.well-known/openid-configuration" \
     client_id="minio-client-app-2" \
     client_secret="minio-client-app-secret-2" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex2" \
     role_policy="readwrite"

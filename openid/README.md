@@ -19,7 +19,7 @@ export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/o
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
 export MINIO_IDENTITY_OPENID_CLAIM_NAME="groups"
-export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
+export MINIO_IDENTITY_OPENID_SCOPES="openid,groups,email,profile"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
 ```
 
@@ -29,7 +29,7 @@ mc idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     claim_name="groups"
 ```
@@ -42,7 +42,7 @@ export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/o
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
 export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
-export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
+export MINIO_IDENTITY_OPENID_SCOPES="openid,groups,email,profile"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
 ```
 
@@ -52,7 +52,7 @@ mc idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     role_policy="consoleAdmin"
 ```
@@ -74,7 +74,7 @@ Server env:
 export MINIO_IDENTITY_OPENID_CONFIG_URL="http://localhost:5556/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID="minio-client-app"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET="minio-client-app-secret"
-export MINIO_IDENTITY_OPENID_SCOPES="openid,groups"
+export MINIO_IDENTITY_OPENID_SCOPES="openid,groups,email,profile"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI="http://127.0.0.1:10000/oauth_callback"
 export MINIO_IDENTITY_OPENID_ROLE_POLICY="consoleAdmin"
 export MINIO_IDENTITY_OPENID_DISPLAY_NAME="Login via dex1"
@@ -82,7 +82,7 @@ export MINIO_IDENTITY_OPENID_DISPLAY_NAME="Login via dex1"
 export MINIO_IDENTITY_OPENID_CONFIG_URL_OIDC2="http://localhost:5557/dex/.well-known/openid-configuration"
 export MINIO_IDENTITY_OPENID_CLIENT_ID_OIDC2="minio-client-app-2"
 export MINIO_IDENTITY_OPENID_CLIENT_SECRET_OIDC2="minio-client-app-secret-2"
-export MINIO_IDENTITY_OPENID_SCOPES_OIDC2="openid,groups"
+export MINIO_IDENTITY_OPENID_SCOPES_OIDC2="openid,groups,email,profile"
 export MINIO_IDENTITY_OPENID_REDIRECT_URI_OIDC2="http://127.0.0.1:10000/oauth_callback"
 export MINIO_IDENTITY_OPENID_ROLE_POLICY_OIDC2="readwrite"
 export MINIO_IDENTITY_OPENID_DISPLAY_NAME_OIDC2="Login via dex2"
@@ -94,7 +94,7 @@ mc idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex1" \
     role_policy="consoleAdmin"
@@ -104,7 +104,7 @@ mc idp openid add myminio oidc2 \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app-2" \
     client_secret="minio-client-app-secret-2" \
-    scopes="openid,groups" \
+    scopes="openid,groups,email,profile" \
     redirect_uri="http://127.0.0.1:10000/oauth_callback" \
     display_name="Login via dex2" \
     role_policy="readwrite"

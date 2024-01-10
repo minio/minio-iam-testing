@@ -1,3 +1,6 @@
+DEX_IMAGE = quay.io/minio/dex:latest
+LDAP_IMAGE = quay.io/minio/openldap:latest
+
 all: docker-images
 
 docker-images:
@@ -12,19 +15,19 @@ docker-run:
         --env LDAP_ADMIN_PASSWORD="admin" \
         --hostname openldap \
         --detach \
-        quay.io/minio/openldap:latest --copy-service
+        $(LDAP_IMAGE) --copy-service
 	docker run \
         -p 5556:5556 \
         --name dex \
         --detach \
-        quay.io/minio/dex:latest
+        $(DEX_IMAGE)
 	docker run \
         -p 5557:5557 \
         --env DEX_ISSUER="http://127.0.0.1:5557/dex" \
         --env DEX_WEB_HTTP="0.0.0.0:5557" \
         --name dex-2 \
         --detach \
-        quay.io/minio/dex:latest
+        $(DEX_IMAGE)
 
 podman-images:
 	(cd ldap && podman build -t quay.io/minio/openldap:latest .)
@@ -42,19 +45,19 @@ podman-run:
         --name openldap \
         --pod iam-testing \
         --detach \
-        quay.io/minio/openldap:latest --copy-service
+        $(LDAP_IMAGE) --copy-service
 	podman run \
         --name dex \
         --pod iam-testing \
         --detach \
-        quay.io/minio/dex:latest
+        $(DEX_IMAGE)
 	podman run \
         --env DEX_ISSUER="http://127.0.0.1:5557/dex" \
         --env DEX_WEB_HTTP="0.0.0.0:5557" \
         --name dex-2 \
         --pod iam-testing \
         --detach \
-        quay.io/minio/dex:latest
+        $(DEX_IMAGE)
 
 clean:
 	@podman pod rm -f iam-testing || echo "[Podman] Pod iam-testing does not exist"

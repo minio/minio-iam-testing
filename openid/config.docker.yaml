@@ -71,7 +71,7 @@ connectors:
 
     userSearch:
       baseDN: dc=min,dc=io
-      filter: "(objectClass=person)"
+      filter: "(objectClass=inetOrgPerson)"
       username: mail
       # "DN" (case sensitive) is a special attribute name. It indicates that
       # this value should be taken from the entity's DN not an attribute on
@@ -79,6 +79,7 @@ connectors:
       idAttr: DN
       emailAttr: mail
       nameAttr: cn
+      preferredUsernameAttr: uid
 
     groupSearch:
       baseDN: dc=min,dc=io
