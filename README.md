@@ -31,7 +31,7 @@ As an example, for the user "Dillon Harper", the login username (used in MinIO) 
 Once the IDP container is running, and MinIO is running and configured with `mc` as `myminio`, configure LDAP IDP in MinIO with:
 
 ``` sh
-mc admin idp ldap add myminio \
+mc idp ldap add myminio \
     server_addr=localhost:1389 \
     server_insecure=on \
     lookup_bind_dn=cn=admin,dc=min,dc=io \
@@ -55,7 +55,7 @@ As an example, for the user "Dillon Harper", the Dex IDP username is `dillon@exa
 Once the IDP containers are running, and MinIO is running and configured with `mc` as `myminio`, configure both the Dex IDPs in MinIO with:
 
 ```sh
-mc admin idp openid add myminio \
+mc idp openid add myminio \
     config_url="http://localhost:5556/dex/.well-known/openid-configuration" \
     client_id="minio-client-app" \
     client_secret="minio-client-app-secret" \
@@ -65,7 +65,7 @@ mc admin idp openid add myminio \
     role_policy="consoleAdmin"
 
 # For the second one the IDP configuration must have a name (here "oidc2")
-mc admin idp openid add myminio oidc2 \
+mc idp openid add myminio oidc2 \
     config_url="http://localhost:5557/dex/.well-known/openid-configuration" \
     client_id="minio-client-app-2" \
     client_secret="minio-client-app-secret-2" \
