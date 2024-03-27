@@ -99,6 +99,15 @@ uid: Пользователь
 mail: scharsman@example.io
 userPassword: {SSHA}XQSZqLPvYgm30wR7pk67a1GW+q+DDvSj
 
+# Testing unicode (password is example here)
+dn: uid=svc.algorithm,OU=swengg,DC=min,DC=io
+objectClass: inetOrgPerson
+cn: svc algorithm
+sn: Charsman2
+uid: svc.algorithm
+mail: svcalg@example.io
+userPassword: {SSHA}5ny44UQd4ELPqFWxw7yJwc7pOikL2QTh
+
 # Creates groups ou for swengg
 dn: ou=groups,ou=swengg,dc=min,dc=io
 objectclass: organizationalUnit
@@ -121,3 +130,10 @@ member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
 member: uid=liza,ou=people,ou=swengg,dc=min,dc=io
 member: uid=fahim,ou=people,ou=swengg,dc=min,dc=io
 member: uid=Пользователь,OU=people,OU=swengg,DC=min,DC=io
+
+dn: cn=project.c,ou=groups,ou=swengg,dc=min,dc=io
+objectclass: groupofnames
+cn: project.c
+description: Project C group members
+member: uid=Пользователь,OU=people,OU=swengg,DC=min,DC=io
+member: uid=svc.algorithm,OU=swengg,DC=min,DC=io
