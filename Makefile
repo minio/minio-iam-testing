@@ -1,11 +1,11 @@
-DEX_IMAGE = quay.io/minio/dex:latest
-LDAP_IMAGE = quay.io/minio/openldap:latest
+DEX_IMAGE ?= quay.io/minio/dex:latest
+LDAP_IMAGE ?= quay.io/minio/openldap:latest
 
 all: docker-images
 
 docker-images:
-	(cd ldap && docker build -t quay.io/minio/openldap:latest .)
-	(cd openid && docker build -t quay.io/minio/dex:latest .)
+	(cd ldap && docker build -t $(LDAP_IMAGE) .)
+	(cd openid && docker build -t $(DEX_IMAGE) .)
 
 docker-run:
 	docker run \
@@ -30,8 +30,8 @@ docker-run:
         $(DEX_IMAGE)
 
 podman-images:
-	(cd ldap && podman build -t quay.io/minio/openldap:latest .)
-	(cd openid && podman build -t quay.io/minio/dex:latest .)
+	(cd ldap && podman build -t $(LDAP_IMAGE) .)
+	(cd openid && podman build -t $(DEX_IMAGE) .)
 
 # Run OpenLDAP (exposed on localhost:1389,1636) and two Dex instances (exposed
 # at localhost:5556 and localhost:5557).
