@@ -76,6 +76,15 @@ userPassword: {SSHA}UH+LmoEhWWW6s9rjgdpqHPI0qCMouY8+
 objectClass: ldapPublicKey
 sshPublicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDVGk/SRz4fwTPK0+Ra7WYUGf3o08YkpI0yTMPpHwYoq dillon@example.io
 
+# Create Cyrillic letters
+dn: uid=ivanov,ou=people,ou=swengg,dc=min,dc=io
+objectClass: inetOrgPerson
+cn: Иванов Иван
+sn: Иван
+uid: ivanov
+mail: ivanov@example.io
+userPassword: {SSHA}UH+LmoEhWWW6s9rjgdpqHPI0qCMouY8+
+
 dn: uid=liza,ou=people,ou=swengg,dc=min,dc=io
 objectClass: inetOrgPerson
 cn: Elizabeth Jones
