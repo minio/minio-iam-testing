@@ -7,7 +7,7 @@ docker-images:
 	(cd ldap && docker build -t $(LDAP_IMAGE) .)
 	(cd openid && docker build -t $(DEX_IMAGE) .)
 
-docker-run:
+ldap-service:
 	docker run \
         -p 1389:389 -p 1636:636 --name openldap \
         --env LDAP_ORGANIZATION="MinIO Inc." \
@@ -16,6 +16,8 @@ docker-run:
         --hostname openldap \
         --detach \
         $(LDAP_IMAGE) --copy-service
+
+openid-service:
 	docker run \
         -p 5556:5556 \
         --name dex \
@@ -28,6 +30,8 @@ docker-run:
         --name dex-2 \
         --detach \
         $(DEX_IMAGE)
+
+docker-run: ldap-service openid-service
 
 podman-images:
 	(cd ldap && podman build -t $(LDAP_IMAGE) .)
