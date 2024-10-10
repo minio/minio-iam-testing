@@ -121,6 +121,15 @@ uid: svc.algorithm
 mail: svcalg@example.io
 userPassword: {SSHA}5ny44UQd4ELPqFWxw7yJwc7pOikL2QTh
 
+# Test user with slash in name
+dn: uid=slash/user,ou=people,ou=swengg,dc=min,dc=io
+objectClass: inetOrgPerson
+cn: Slash User
+sn: User
+uid: slashuser
+mail: slash@example.io
+userPassword: {SSHA}yb8F07spL5C3lqkaxzqrIqcjMVzbi53p
+
 # Creates groups ou for swengg
 dn: ou=groups,ou=swengg,dc=min,dc=io
 objectclass: organizationalUnit
@@ -150,3 +159,10 @@ cn: project.c
 description: Project C group members
 member: uid=Пользователь,OU=people,OU=swengg,DC=min,DC=io
 member: uid=svc.algorithm,OU=swengg,DC=min,DC=io
+
+dn: cn=project/d,ou=groups,ou=swengg,dc=min,dc=io
+objectclass: groupofnames
+cn: group/d
+description: Project D group members
+member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
+member: uid=slash/user,ou=people,ou=swengg,dc=min,dc=io
