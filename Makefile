@@ -3,9 +3,13 @@ LDAP_IMAGE ?= quay.io/minio/openldap:latest
 
 all: docker-images
 
+docker-push: docker-images
+	@docker push $(LDAP_IMAGE)
+	@docker push $(DEX_IMAGE)
+
 docker-images:
-	(cd ldap && docker build -t $(LDAP_IMAGE) .)
-	(cd openid && docker build -t $(DEX_IMAGE) .)
+	@(cd ldap && docker build -t $(LDAP_IMAGE) .)
+	@(cd openid && docker build -t $(DEX_IMAGE) .)
 
 ldap-service:
 	docker run \
