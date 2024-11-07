@@ -9,7 +9,7 @@ docker-images:
 
 ldap-service:
 	docker run \
-        -p 1389:389 -p 1636:636 --name openldap \
+        -p 389:389 -p 636:636 --name openldap \
         --env LDAP_ORGANIZATION="MinIO Inc." \
         --env LDAP_DOMAIN="min.io" \
         --env LDAP_ADMIN_PASSWORD="admin" \
@@ -19,11 +19,13 @@ ldap-service:
 
 openid-service:
 	docker run \
+        --net=host \
         -p 5556:5556 \
         --name dex \
         --detach \
         $(DEX_IMAGE)
 	docker run \
+        --net=host \
         -p 5557:5557 \
         --env DEX_ISSUER="http://127.0.0.1:5557/dex" \
         --env DEX_WEB_HTTP="0.0.0.0:5557" \

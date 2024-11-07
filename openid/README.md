@@ -115,7 +115,7 @@ The server will now print two ARNs and both may be used to generate STS credenti
 
 ## Changing the LDAP server address
 
-This may be needed if the LDAP server is not running at `locahost:389` for the Dex container.
+This may be needed if the LDAP server is not running at `localhost:389` for the Dex container.
 
 Add the following environment as a command line option when starting the container:
 

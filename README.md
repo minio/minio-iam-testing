@@ -24,7 +24,7 @@ minio server --console-address :10000 /mnt/disks{1...4}
 
 ## LDAP IDP Testing Quickstart
 
-Initial data populated in the LDAP server is present in the `ldap/bootstrap.ldif` file in this repo. It creates a LDAP hierachy with dummy data. In this dataset, each user's password is same as their `uid` value. For example, the password for `uid=bobfisher,ou=people,ou=hwengg,dc=min,dc=io` is just `bobfisher`.
+Initial data populated in the LDAP server is present in the `ldap/bootstrap.ldif` file in this repo. It creates a LDAP hierarchy with dummy data. In this dataset, each user's password is same as their `uid` value. For example, the password for `uid=bobfisher,ou=people,ou=hwengg,dc=min,dc=io` is just `bobfisher`.
 
 As an example, for the user "Dillon Harper", the login username (used in MinIO) is `dillon` and the password is `dillon`.
 
