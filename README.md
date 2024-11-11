@@ -32,7 +32,7 @@ Once the IDP container is running, and MinIO is running and configured with `mc`
 
 ``` sh
 mc idp ldap add myminio \
-    server_addr=localhost:1389 \
+    server_addr=localhost:389 \
     server_insecure=on \
     lookup_bind_dn=cn=admin,dc=min,dc=io \
     lookup_bind_password=admin \

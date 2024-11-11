@@ -7,8 +7,8 @@ services:
   ldap:
     image: quay.io/minio/openldap:latest
     ports:
-      - "1389:389"
-      - "1636:636"
+      - "389:389"
+      - "636:636"
     environment:
       LDAP_ORGANIZATION: "MinIO Inc."
       LDAP_DOMAIN: "min.io"

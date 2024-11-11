@@ -10,7 +10,7 @@ In another terminal start the MinIO server locally configured with the above LDA
 
 #+begin_src shell
   
-export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:1389
+export MINIO_IDENTITY_LDAP_SERVER_ADDR=localhost:389
 export MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
 export MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN=cn=admin,dc=min,dc=io
 export MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=admin

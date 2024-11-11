@@ -43,10 +43,10 @@ podman-images:
 	(cd ldap && podman build -t $(LDAP_IMAGE) .)
 	(cd openid && podman build -t $(DEX_IMAGE) .)
 
-# Run OpenLDAP (exposed on localhost:1389,1636) and two Dex instances (exposed
+# Run OpenLDAP (exposed on localhost:389,636) and two Dex instances (exposed
 # at localhost:5556 and localhost:5557).
 podman-run:
-	podman pod create --name iam-testing -p 1389:389 -p 1636:636 -p 5556:5556 -p 5557:5557
+	podman pod create --name iam-testing -p 389:389 -p 636:636 -p 5556:5556 -p 5557:5557
 	podman pod start iam-testing
 	podman run \
         --env LDAP_ORGANIZATION="MinIO Inc." \
