@@ -17,9 +17,9 @@ ldap-service:
         --env LDAP_ORGANIZATION="MinIO Inc." \
         --env LDAP_DOMAIN="min.io" \
         --env LDAP_ADMIN_PASSWORD="admin" \
-        --hostname openldap \
+		--hostname openldap \
         --detach \
-        $(LDAP_IMAGE) --copy-service
+        $(LDAP_IMAGE) --copy-service --loglevel debug
 
 openid-service:
 	docker run \

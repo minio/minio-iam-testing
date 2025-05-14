@@ -764,3 +764,37 @@ cn: group/d
 description: Project D group members
 member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
 member: uid=slash/user,ou=people,ou=swengg,dc=min,dc=io
+
+####
+# Some users with casing differences; passwords are = uid
+####
+dn: uid=CamelCaseDude,ou=People,OU=Swengg,dc=Min,dc=IO
+objectClass: inetOrgPerson
+cn: CamelCaseDude Smith
+sn: Smith
+uid: CamelCaseDude
+mail: camelcasedude@example.io
+userPassword: {SSHA}j5ULNIaZa3sajUugdDDW6y1ToghEHdbX
+
+dn: uid=UPPERCASEDUDE,ou=PeoPle,OU=Swengg,dc=miN,dc=IO
+objectClass: inetOrgPerson
+cn: UPPERCASEDUDE Smith
+sn: Smith
+uid: UPPERCASEDUDE
+mail: uppercasedude@example.io
+userPassword: {SSHA}2vfJIi2LjXxDcFyOU1S+UvgNl3OD9gdT
+
+dn: cn=CamelCaseGroup,ou=groups,OU=SwEngg,dc=Min,dc=Io
+objectclass: groupofnames
+cn: CamelCaseGroup
+description: CamelCaseGroup members
+member: uid=UPPERCASEDUDE,ou=PeoPle,OU=Swengg,dc=miN,dc=IO
+member: uid=CamelCaseDude,ou=People,OU=Swengg,dc=Min,dc=IO
+
+# Here the members are all lower case.
+dn: cn=CamelCaseGroup2,ou=groups,OU=SwEngg,dc=Min,dc=Io
+objectclass: groupofnames
+cn: CamelCaseGroup2
+description: CamelCaseGroup2 members
+member: uid=uppercasedude,ou=people,ou=swengg,dc=min,dc=io
+member: uid=camelcasedude,ou=people,ou=swengg,dc=min,dc=io
