@@ -72,3 +72,5 @@ podman-run:
 clean:
 	@podman pod rm -f iam-testing || echo "[Podman] Pod iam-testing does not exist"
 	@docker rm -f openldap dex dex-2 || echo "[Docker] Clean!"
+
+restart: clean docker-images docker-run

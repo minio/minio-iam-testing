@@ -129,6 +129,15 @@ uid: slashuser
 mail: slash@example.io
 userPassword: {SSHA}yb8F07spL5C3lqkaxzqrIqcjMVzbi53p
 
+# Test user with escaped comma in name
+dn: uid=Escape\, user,ou=people,ou=swengg,dc=min,dc=io
+objectClass: inetOrgPerson
+cn: Escape User
+sn: User
+uid: escapeuser
+mail: escapeuser@example.io
+userPassword: {SSHA}CZ51C/9WOluwgQfyuy1A1fqVEvlfAju8
+
 # Creates groups ou for swengg
 dn: ou=groups,ou=swengg,dc=min,dc=io
 objectclass: organizationalUnit
@@ -798,3 +807,10 @@ cn: CamelCaseGroup2
 description: CamelCaseGroup2 members
 member: uid=uppercasedude,ou=people,ou=swengg,dc=min,dc=io
 member: uid=camelcasedude,ou=people,ou=swengg,dc=min,dc=io
+
+dn: cn=Escape\, group,ou=groups,ou=swengg,dc=min,dc=io
+objectclass: groupofnames
+cn: Escape, group
+description: Escape, group members
+member: uid=Escape\, user,ou=people,ou=swengg,dc=min,dc=io
+member: uid=dillon,ou=people,ou=swengg,dc=min,dc=io
